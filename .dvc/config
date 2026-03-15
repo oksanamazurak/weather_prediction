@@ -1,4 +1,9 @@
 [core]
-    remote = mylocal
-['remote "mylocal"']
-    url = ../../dvc_storage
+    remote = myremote
+['remote "origin"']
+    url = https://github.com/oksanamazurak/weather_prediction
+['remote "gdrive_remote"']
+    url = gdrive://172aQ3-YMy9s3x889a6XbJaO8m-bE-K7-?hl=ru
+['remote "myremote"']
+    url = s3://weather-prediction-oksana-mazurak/dvcstore
+    region = eu-north-1
