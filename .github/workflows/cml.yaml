@@ -13,7 +13,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -21,11 +22,25 @@ jobs:
           python-version: "3.11"
           cache: "pip"
 
+      # =========================
+      # Install dependencies
+      # =========================
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          pip install dvc
 
+      # =========================
+      # Pull data from DVC
+      # =========================
+      - name: Pull data with DVC
+        run: |
+          dvc pull
+
+      # =========================
+      # Train model
+      # =========================
       - name: Train model
         env:
           CI: "true"
@@ -33,6 +48,9 @@ jobs:
         run: |
           python src/train.py data/prepared output
 
+      # =========================
+      # Run tests
+      # =========================
       - name: Run tests
         env:
           F1_THRESHOLD: "0.70"
@@ -42,7 +60,6 @@ jobs:
       # =========================
       # BASELINE COMPARISON (PR only)
       # =========================
-
       - name: Compare with baseline
         if: github.event_name == 'pull_request'
         run: |
@@ -51,7 +68,6 @@ jobs:
       # =========================
       # CML REPORT (PR only)
       # =========================
-
       - name: Create CML report
         if: github.event_name == 'pull_request'
         env:
@@ -67,7 +83,6 @@ jobs:
       # =========================
       # CD: Upload artifact (main only)
       # =========================
-
       - name: Upload model artifact (main only)
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         uses: actions/upload-artifact@v4
