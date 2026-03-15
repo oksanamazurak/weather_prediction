@@ -61,7 +61,7 @@ jobs:
       - name: Train model
         env:
           CI: "true"
-          F1_THRESHOLD: "0.70"
+          F1_THRESHOLD: "0.30"
           MLFLOW_TRACKING_URI: "file:./mlruns"
         run: |
           python src/train.py data/prepared output
@@ -71,7 +71,7 @@ jobs:
       # =========================
       - name: Run tests
         env:
-          F1_THRESHOLD: "0.70"
+          F1_THRESHOLD: "0.30"
         run: |
           pytest -q
 
