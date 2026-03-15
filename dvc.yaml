@@ -1,0 +1,17 @@
+stages:
+  prepare:
+    cmd: python src/prepare.py data/raw/WeatherAUS.csv data/prepared
+    deps:
+      - data/raw/WeatherAUS.csv
+      - src/prepare.py
+    outs:
+      - data/prepared
+
+  train:
+    cmd: python src/train.py data/prepared data/models
+    deps:
+      - data/prepared/train.csv
+      - data/prepared/test.csv
+      - src/train.py
+    outs:
+      - data/models

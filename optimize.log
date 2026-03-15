@@ -1,0 +1,153 @@
+[2026-03-13 14:33:23,828][root][WARNING] - Malformed experiment '1'. Detailed error Yaml file '.\mlruns\1\meta.yaml' does not exist.
+Traceback (most recent call last):
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 383, in search_experiments
+    exp = self._get_experiment(exp_id, view_type)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 481, in _get_experiment
+    meta = FileStore._read_yaml(experiment_dir, FileStore.META_DATA_FILE_NAME)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 1670, in _read_yaml
+    return _read_helper(root, file_name, attempts_remaining=retries)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 1663, in _read_helper
+    result = read_yaml(root, file_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\utils\yaml_utils.py", line 104, in read_yaml
+    raise MissingConfigException(f"Yaml file '{file_path}' does not exist.")
+mlflow.exceptions.MissingConfigException: Yaml file '.\mlruns\1\meta.yaml' does not exist.
+[2026-03-13 14:33:23,839][root][WARNING] - Malformed experiment '1'. Detailed error Yaml file '.\mlruns\1\meta.yaml' does not exist.
+Traceback (most recent call last):
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 383, in search_experiments
+    exp = self._get_experiment(exp_id, view_type)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 481, in _get_experiment
+    meta = FileStore._read_yaml(experiment_dir, FileStore.META_DATA_FILE_NAME)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 1670, in _read_yaml
+    return _read_helper(root, file_name, attempts_remaining=retries)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 1663, in _read_helper
+    result = read_yaml(root, file_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\utils\yaml_utils.py", line 104, in read_yaml
+    raise MissingConfigException(f"Yaml file '{file_path}' does not exist.")
+mlflow.exceptions.MissingConfigException: Yaml file '.\mlruns\1\meta.yaml' does not exist.
+[2026-03-13 14:38:15,366][root][WARNING] - Malformed experiment '1'. Detailed error Yaml file '.\mlruns\1\meta.yaml' does not exist.
+Traceback (most recent call last):
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 383, in search_experiments
+    exp = self._get_experiment(exp_id, view_type)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 481, in _get_experiment
+    meta = FileStore._read_yaml(experiment_dir, FileStore.META_DATA_FILE_NAME)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 1670, in _read_yaml
+    return _read_helper(root, file_name, attempts_remaining=retries)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 1663, in _read_helper
+    result = read_yaml(root, file_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\utils\yaml_utils.py", line 104, in read_yaml
+    raise MissingConfigException(f"Yaml file '{file_path}' does not exist.")
+mlflow.exceptions.MissingConfigException: Yaml file '.\mlruns\1\meta.yaml' does not exist.
+[2026-03-13 22:20:06,134][root][WARNING] - Malformed experiment '1'. Detailed error Yaml file '.\mlruns\1\meta.yaml' does not exist.
+Traceback (most recent call last):
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 383, in search_experiments
+    exp = self._get_experiment(exp_id, view_type)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 481, in _get_experiment
+    meta = FileStore._read_yaml(experiment_dir, FileStore.META_DATA_FILE_NAME)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 1670, in _read_yaml
+    return _read_helper(root, file_name, attempts_remaining=retries)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 1663, in _read_helper
+    result = read_yaml(root, file_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\utils\yaml_utils.py", line 104, in read_yaml
+    raise MissingConfigException(f"Yaml file '{file_path}' does not exist.")
+mlflow.exceptions.MissingConfigException: Yaml file '.\mlruns\1\meta.yaml' does not exist.
+[2026-03-15 12:53:48,948][root][WARNING] - Malformed experiment '1'. Detailed error Yaml file '.\mlruns\1\meta.yaml' does not exist.
+Traceback (most recent call last):
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 383, in search_experiments
+    exp = self._get_experiment(exp_id, view_type)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 481, in _get_experiment
+    meta = FileStore._read_yaml(experiment_dir, FileStore.META_DATA_FILE_NAME)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 1670, in _read_yaml
+    return _read_helper(root, file_name, attempts_remaining=retries)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 1663, in _read_helper
+    result = read_yaml(root, file_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\utils\yaml_utils.py", line 104, in read_yaml
+    raise MissingConfigException(f"Yaml file '{file_path}' does not exist.")
+mlflow.exceptions.MissingConfigException: Yaml file '.\mlruns\1\meta.yaml' does not exist.
+[2026-03-15 12:57:27,458][root][WARNING] - Malformed experiment '1'. Detailed error Yaml file '.\mlruns\1\meta.yaml' does not exist.
+Traceback (most recent call last):
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 383, in search_experiments
+    exp = self._get_experiment(exp_id, view_type)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 481, in _get_experiment
+    meta = FileStore._read_yaml(experiment_dir, FileStore.META_DATA_FILE_NAME)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 1670, in _read_yaml
+    return _read_helper(root, file_name, attempts_remaining=retries)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 1663, in _read_helper
+    result = read_yaml(root, file_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\utils\yaml_utils.py", line 104, in read_yaml
+    raise MissingConfigException(f"Yaml file '{file_path}' does not exist.")
+mlflow.exceptions.MissingConfigException: Yaml file '.\mlruns\1\meta.yaml' does not exist.
+[2026-03-15 13:12:43,706][root][WARNING] - Malformed experiment '1'. Detailed error Yaml file '.\mlruns\1\meta.yaml' does not exist.
+Traceback (most recent call last):
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 383, in search_experiments
+    exp = self._get_experiment(exp_id, view_type)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 481, in _get_experiment
+    meta = FileStore._read_yaml(experiment_dir, FileStore.META_DATA_FILE_NAME)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 1670, in _read_yaml
+    return _read_helper(root, file_name, attempts_remaining=retries)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 1663, in _read_helper
+    result = read_yaml(root, file_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\utils\yaml_utils.py", line 104, in read_yaml
+    raise MissingConfigException(f"Yaml file '{file_path}' does not exist.")
+mlflow.exceptions.MissingConfigException: Yaml file '.\mlruns\1\meta.yaml' does not exist.
+[2026-03-15 13:14:14,908][root][WARNING] - Malformed experiment '1'. Detailed error Yaml file '.\mlruns\1\meta.yaml' does not exist.
+Traceback (most recent call last):
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 383, in search_experiments
+    exp = self._get_experiment(exp_id, view_type)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 481, in _get_experiment
+    meta = FileStore._read_yaml(experiment_dir, FileStore.META_DATA_FILE_NAME)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 1670, in _read_yaml
+    return _read_helper(root, file_name, attempts_remaining=retries)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 1663, in _read_helper
+    result = read_yaml(root, file_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\utils\yaml_utils.py", line 104, in read_yaml
+    raise MissingConfigException(f"Yaml file '{file_path}' does not exist.")
+mlflow.exceptions.MissingConfigException: Yaml file '.\mlruns\1\meta.yaml' does not exist.
+[2026-03-15 14:04:36,697][root][WARNING] - Malformed experiment '1'. Detailed error Yaml file '.\mlruns\1\meta.yaml' does not exist.
+Traceback (most recent call last):
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 383, in search_experiments
+    exp = self._get_experiment(exp_id, view_type)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 481, in _get_experiment
+    meta = FileStore._read_yaml(experiment_dir, FileStore.META_DATA_FILE_NAME)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 1670, in _read_yaml
+    return _read_helper(root, file_name, attempts_remaining=retries)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\store\tracking\file_store.py", line 1663, in _read_helper
+    result = read_yaml(root, file_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\oksan\mlops_lab_1\venv\Lib\site-packages\mlflow\utils\yaml_utils.py", line 104, in read_yaml
+    raise MissingConfigException(f"Yaml file '{file_path}' does not exist.")
+mlflow.exceptions.MissingConfigException: Yaml file '.\mlruns\1\meta.yaml' does not exist.

@@ -1,0 +1,3 @@
+sampler: grid
+direction: maximize
+n_trials: 30

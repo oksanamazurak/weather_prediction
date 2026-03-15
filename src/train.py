@@ -1,171 +1,115 @@
-import argparse
 import pandas as pd
-import numpy as np
+import sys
+import os
+import json
 import mlflow
 import mlflow.sklearn
-
-import matplotlib.pyplot as plt
-import seaborn as sns
-
-from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, f1_score, confusion_matrix
-from sklearn.preprocessing import LabelEncoder
+from sklearn.metrics import accuracy_score, f1_score
+import joblib
 
+# =========================
+# INPUT / OUTPUT
+# =========================
 
-def load_data(path):
-    df = pd.read_csv(path)
-    return df
+input_dir = sys.argv[1]
+output_dir = sys.argv[2]
 
+os.makedirs(output_dir, exist_ok=True)
 
-def preprocess_data(df):
+# =========================
+# CI MODE
+# =========================
 
-    # Цільова змінна
-    df = df.dropna(subset=["RainTomorrow"])
+CI = os.getenv("CI", "false") == "true"
 
-    df["RainTomorrow"] = df["RainTomorrow"].map({"Yes":1, "No":0})
-    df["RainToday"] = df["RainToday"].map({"Yes":1, "No":0})
+# =========================
+# LOAD DATA
+# =========================
 
-    # Заповнення пропусків
-    numeric_cols = df.select_dtypes(include=["float64","int64"]).columns
-    df[numeric_cols] = df[numeric_cols].fillna(df[numeric_cols].median())
+train = pd.read_csv(os.path.join(input_dir, "train.csv"))
+test = pd.read_csv(os.path.join(input_dir, "test.csv"))
 
-    categorical_cols = df.select_dtypes(include=["object"]).columns
+# Якщо потрібно — можна обмежити дані в CI
+if CI:
+    train = train.head(5000)
+    test = test.head(2000)
 
-    for col in categorical_cols:
-        df[col] = df[col].fillna("Unknown")
-        le = LabelEncoder()
-        df[col] = le.fit_transform(df[col])
+X_train = train.drop("RainTomorrow", axis=1)
+y_train = train["RainTomorrow"]
 
-    X = df.drop("RainTomorrow", axis=1)
-    y = df["RainTomorrow"]
+X_test = test.drop("RainTomorrow", axis=1)
+y_test = test["RainTomorrow"]
 
-    return X, y
+# =========================
+# MLflow
+# =========================
 
+mlflow.set_experiment("Weather_Rain_Prediction")
 
-def plot_confusion_matrix(y_test, y_pred):
+with mlflow.start_run():
 
-    cm = confusion_matrix(y_test, y_pred)
+    mlflow.set_tag("author", "student")
+    mlflow.set_tag("model_type", "RandomForest")
+    mlflow.set_tag("dataset", "WeatherAUS")
+    mlflow.set_tag("ci_mode", str(CI))
 
-    plt.figure()
-    sns.heatmap(cm, annot=True, fmt="d")
-    plt.xlabel("Predicted")
-    plt.ylabel("Actual")
-    plt.title("Confusion Matrix")
+    # Менша модель у CI
+    n_estimators = 50 if CI else 100
+    max_depth = 8 if CI else 15
 
-    plt.savefig("confusion_matrix.png")
-    plt.close()
-
-
-def plot_feature_importance(model, X):
-
-    importances = model.feature_importances_
-    indices = np.argsort(importances)[::-1]
-
-    plt.figure(figsize=(10,6))
-    plt.title("Feature Importance")
-    plt.bar(range(len(importances)), importances[indices])
-    plt.xticks(range(len(importances)), X.columns[indices], rotation=90)
-
-    plt.tight_layout()
-    plt.savefig("feature_importance.png")
-    plt.close()
-
-
-def train(args):
-
-    df = load_data(args.data_path)
-
-    X, y = preprocess_data(df)
-
-    X_train, X_test, y_train, y_test = train_test_split(
-        X,
-        y,
-        test_size=args.test_size,
+    model = RandomForestClassifier(
+        n_estimators=n_estimators,
+        max_depth=max_depth,
         random_state=42
     )
 
-    mlflow.set_experiment("Weather_Rain_Prediction")
+    # Train
+    model.fit(X_train, y_train)
 
-    with mlflow.start_run():
+    # Predict
+    y_pred = model.predict(X_test)
 
-        mlflow.set_tag("author", "student")
-        mlflow.set_tag("model_type", "RandomForest")
-        mlflow.set_tag("dataset", "WeatherAUS")
+    # Metrics
+    test_accuracy = accuracy_score(y_test, y_pred)
+    test_f1 = f1_score(y_test, y_pred)
 
-        model = RandomForestClassifier(
-            n_estimators=args.n_estimators,
-            max_depth=args.max_depth,
-            random_state=42
+    # Log to MLflow
+    mlflow.log_metric("test_accuracy", test_accuracy)
+    mlflow.log_metric("test_f1_score", test_f1)
+
+    # Save model to MLflow
+    mlflow.sklearn.log_model(model, "random_forest_model")
+
+    # Save model locally (для CI тестів)
+    model_path = os.path.join(output_dir, "rf_model.pkl")
+    joblib.dump(model, model_path)
+
+    # =========================
+    # SAVE METRICS FOR PYTEST
+    # =========================
+
+    metrics = {
+        "accuracy": float(test_accuracy),
+        "f1": float(test_f1)
+    }
+
+    # metrics.json у корені проєкту
+    metrics_path = os.path.abspath("metrics.json")
+
+    with open(metrics_path, "w", encoding="utf-8") as f:
+        json.dump(metrics, f, indent=2)
+
+    # =========================
+    # QUALITY GATE
+    # =========================
+
+    threshold = float(os.getenv("F1_THRESHOLD", "0.70"))
+
+    if test_f1 < threshold:
+        raise ValueError(
+            f"Quality Gate failed: F1={test_f1:.4f} < {threshold}"
         )
 
-        model.fit(X_train, y_train)
-
-        # Прогноз та метрики для тестової вибірки
-        y_pred = model.predict(X_test)
-        test_accuracy = accuracy_score(y_test, y_pred)
-        test_f1 = f1_score(y_test, y_pred)
-
-        # Прогноз та метрики для тренувальної вибірки
-        y_train_pred = model.predict(X_train)
-        train_accuracy = accuracy_score(y_train, y_train_pred)
-        train_f1 = f1_score(y_train, y_train_pred)
-
-        # Логування параметрів
-        mlflow.log_param("n_estimators", args.n_estimators)
-        mlflow.log_param("max_depth", args.max_depth)
-        mlflow.log_param("test_size", args.test_size)
-
-        # Логування метрик
-        mlflow.log_metric("test_accuracy", test_accuracy)
-        mlflow.log_metric("test_f1_score", test_f1)
-        mlflow.log_metric("train_accuracy", train_accuracy)
-        mlflow.log_metric("train_f1_score", train_f1)
-
-        # графіки
-        plot_confusion_matrix(y_test, y_pred)
-        plot_feature_importance(model, X)
-
-        mlflow.log_artifact("confusion_matrix.png")
-        mlflow.log_artifact("feature_importance.png")
-
-        # логування моделі
-        mlflow.sklearn.log_model(model, "random_forest_model")
-
-        print("Train Accuracy:", train_accuracy)
-        print("Train F1 Score:", train_f1)
-        print("Test Accuracy:", test_accuracy)
-        print("Test F1 Score:", test_f1)
-
-
-if __name__ == "__main__":
-
-    parser = argparse.ArgumentParser()
-
-    parser.add_argument(
-        "--data_path",
-        type=str,
-        default="data/raw/WeatherAUS.csv"
-    )
-
-    parser.add_argument(
-        "--n_estimators",
-        type=int,
-        default=100
-    )
-
-    parser.add_argument(
-        "--max_depth",
-        type=int,
-        default=10
-    )
-
-    parser.add_argument(
-        "--test_size",
-        type=float,
-        default=0.2
-    )
-
-    args = parser.parse_args()
-
-    train(args)
+    print("Test Accuracy:", test_accuracy)
+    print("Test F1 Score:", test_f1)

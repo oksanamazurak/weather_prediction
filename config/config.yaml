@@ -1,0 +1,17 @@
+defaults:
+  - model: random_forest
+  - hpo: optuna
+
+seed: 42
+
+data:
+  train_path: data/prepared/train.csv
+  test_path: data/prepared/test.csv
+
+mlflow:
+  experiment_name: weather_experiment
+  tracking_uri: file:./mlruns
+
+hydra:
+  run:
+    dir: .

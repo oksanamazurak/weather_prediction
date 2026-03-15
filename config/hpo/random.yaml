@@ -1,0 +1,4 @@
+sampler: random
+direction: maximize
+n_trials: 30
+metric: accuracy

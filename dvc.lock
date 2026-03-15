@@ -1,0 +1,40 @@
+schema: '2.0'
+stages:
+  prepare:
+    cmd: python src/prepare.py data/raw/WeatherAUS.csv data/prepared
+    deps:
+    - path: data/raw/WeatherAUS.csv
+      hash: md5
+      md5: a65cf8b8719b1a65db4f361eeec18457
+      size: 14094055
+    - path: src/prepare.py
+      hash: md5
+      md5: b20c0392d7d9921305ce7fa10782a5d7
+      size: 1053
+    outs:
+    - path: data/prepared
+      hash: md5
+      md5: 3278cc2fd1a062f5a24517ef6f4a4ef7.dir
+      size: 15907388
+      nfiles: 2
+  train:
+    cmd: python src/train.py data/prepared data/models
+    deps:
+    - path: data/prepared/test.csv
+      hash: md5
+      md5: 7c170a89ff2088bb7fad6b2f4180f405
+      size: 3183651
+    - path: data/prepared/train.csv
+      hash: md5
+      md5: 1cf9679fb5883636443f20594c53587f
+      size: 12723737
+    - path: src/train.py
+      hash: md5
+      md5: 2237dd6cf77910991fe7f98747fdde80
+      size: 1349
+    outs:
+    - path: data/models
+      hash: md5
+      md5: 355300e0339d94643967508499b930b1.dir
+      size: 73067065
+      nfiles: 1
