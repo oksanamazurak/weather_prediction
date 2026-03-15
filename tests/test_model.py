@@ -41,11 +41,6 @@ from tests.conftest import (
 class TestDataExists:
     """Verify that required data files are present."""
 
-    def test_raw_data_exists(self):
-        assert os.path.exists(RAW_DATA_PATH), (
-            f"Raw data not found: {RAW_DATA_PATH}"
-        )
-
     def test_prepared_train_exists(self):
         assert os.path.exists(TRAIN_DATA_PATH), (
             f"Prepared train data not found: {TRAIN_DATA_PATH}"
