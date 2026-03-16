@@ -86,17 +86,24 @@ jobs:
       # =========================
       # CML REPORT (PR only)
       # =========================
+      # =========================
+# SETUP CML (PR only)
+# =========================
+      - name: Setup CML
+        if: github.event_name == 'pull_request'
+        uses: iterative/setup-cml@v2
+
       - name: Create CML report
         if: github.event_name == 'pull_request'
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          pip install cml
           echo "## Model Metrics" > report.md
           cat metrics.json >> report.md
           echo "" >> report.md
           echo "## Regression Comparison" >> report.md
           python compare_metrics.py >> report.md || true
+
           cml comment create report.md
 
       # =========================
