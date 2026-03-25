@@ -1,0 +1,171 @@
+name: MLOps CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    name: Code Quality Checks
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8 pylint
+        pip install -r requirements.txt
+    
+    - name: Lint with flake8
+      run: |
+        # Stop the build if there are Python syntax errors or undefined names
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # Exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    
+    - name: Lint with pylint
+      run: |
+        pylint src/ --disable=C0114,C0115,C0116 --exit-zero
+
+  dag-integrity:
+    runs-on: ubuntu-latest
+    name: DAG Integrity Test
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install Airflow
+      run: |
+        python -m pip install --upgrade pip
+        pip install apache-airflow==2.9.2
+    
+    - name: Test DAG integrity
+      run: |
+        python -c "
+        import os
+        from airflow.models.dagbag import DagBag
+        
+        # Load DAGs from the dags directory
+        dag_bag = DagBag(dag_folder='dags', include_examples=False)
+        
+        # Check for import errors
+        if dag_bag.import_errors:
+            print('DAG import errors found:')
+            for dag_id, error in dag_bag.import_errors.items():
+                print(f'{dag_id}: {error}')
+            exit(1)
+        
+        # Check if any DAGs were found
+        if not dag_bag.dags:
+            print('No DAGs found!')
+            exit(1)
+        
+        print(f'Successfully loaded {len(dag_bag.dags)} DAGs:')
+        for dag_id in dag_bag.dags:
+            print(f'  - {dag_id}')
+        
+        print('All DAGs are valid!')
+        "
+
+  docker-build:
+    runs-on: ubuntu-latest
+    name: Docker Build Test
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    
+    - name: Build Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: false
+        tags: mlops-lab:latest
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+  integration-test:
+    runs-on: ubuntu-latest
+    name: Integration Tests
+    needs: [lint, dag-integrity, docker-build]
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest
+    
+    - name: Run tests
+      run: |
+        pytest tests/ -v
+    
+    - name: Test training script
+      env:
+        CI: true
+        F1_THRESHOLD: 0.5  # Lower threshold for CI
+      run: |
+        # Create dummy data directory structure
+        mkdir -p data/prepared
+        mkdir -p models
+        
+        # Run training script in CI mode
+        python src/train.py --input_dir data/prepared --output_dir models
+        
+        # Check if required artifacts are created
+        if [ ! -f "metrics.json" ]; then
+          echo "metrics.json not found!"
+          exit 1
+        fi
+        
+        if [ ! -f "confusion_matrix.png" ]; then
+          echo "confusion_matrix.png not found!"
+          exit 1
+        fi
+        
+        if [ ! -f "models/model.pkl" ]; then
+          echo "models/model.pkl not found!"
+          exit 1
+        fi
+        
+        echo "All artifacts created successfully!"
+        
+        # Validate metrics.json format
+        python -c "
+        import json
+        with open('metrics.json', 'r') as f:
+            metrics = json.load(f)
+        
+        required_keys = ['accuracy', 'f1']
+        for key in required_keys:
+            if key not in metrics:
+                raise ValueError(f'Missing key {key} in metrics.json')
+            if not isinstance(metrics[key], (int, float)):
+                raise ValueError(f'Value for {key} should be numeric')
+        
+        print('metrics.json is valid!')
+        "
